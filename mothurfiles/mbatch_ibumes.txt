@@ -1,0 +1,62 @@
+##mbatch for ibumes: combined ibuprofen and mesalamine
+#03.16.17
+
+# part I, sequence processing:
+#make.contigs(file=ibumes.files, processors=8)
+#summary.seqs(fasta=ibumes.trim.contigs.fasta, processors=8)
+#screen.seqs(fasta=ibumes.trim.contigs.fasta, group=ibumes.contigs.groups, maxambig=0, maxlength=275, processors=8)
+#unique.seqs(fasta=ibumes.trim.contigs.good.fasta)
+#count.seqs(name=ibumes.trim.contigs.good.names, group=ibumes.contigs.good.groups)
+#summary.seqs(count=ibumes.trim.contigs.good.count_table, processors=8)
+#pcr.seqs(fasta=silva.nr_v128.align, start=11894, end=25319, keepdots=F, processors=8)
+#system(mv silva.nr_v128.pcr.align silva.v4.fasta)
+#summary.seqs(fasta=silva.v4.fasta, processors=8)
+#align.seqs(fasta=ibumes.trim.contigs.good.unique.fasta, reference=silva.v4.fasta, processors=8)
+#summary.seqs(fasta=ibumes.trim.contigs.good.unique.align, count=ibumes.trim.contigs.good.count_table, processors=8)
+#screen.seqs(fasta=ibumes.trim.contigs.good.unique.align, count=ibumes.trim.contigs.good.count_table, summary=ibumes.trim.contigs.good.unique.summary, start=1968, end=11550, maxhomop=8, processors=8)
+#summary.seqs(fasta=current, count=current, processors=8)
+#filter.seqs(fasta=ibumes.trim.contigs.good.unique.good.align, vertical=T, trump=., processors=8)
+#unique.seqs(fasta=ibumes.trim.contigs.good.unique.good.filter.fasta, count=ibumes.trim.contigs.good.good.count_table)
+#pre.cluster(fasta=ibumes.trim.contigs.good.unique.good.filter.unique.fasta, count=ibumes.trim.contigs.good.unique.good.filter.count_table, diffs=2, processors=8)
+#chimera.uchime(fasta=ibumes.trim.contigs.good.unique.good.filter.unique.precluster.fasta, count=ibumes.trim.contigs.good.unique.good.filter.unique.precluster.count_table, dereplicate=t, processors=8)
+#remove.seqs(fasta=ibumes.trim.contigs.good.unique.good.filter.unique.precluster.fasta, accnos=ibumes.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.accnos)
+#summary.seqs(fasta=current, count=current, processors=8)
+#classify.seqs(fasta=ibumes.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=ibumes.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table, reference=trainset16_022016.rdp.fasta, taxonomy=trainset16_022016.rdp.tax, cutoff=80)
+#remove.lineage(fasta=ibumes.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=ibumes.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table, taxonomy=ibumes.trim.contigs.good.unique.good.filter.unique.precluster.pick.rdp.wang.taxonomy, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota)
+#count.seqs(name=current, group=current)
+#count.groups(count=ibumes.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table)
+
+# part II, clustering:
+#cluster.split(fasta=ibumes.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta, count=ibumes.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table, taxonomy=ibumes.trim.contigs.good.unique.good.filter.unique.precluster.pick.rdp.wang.pick.taxonomy, splitmethod=classify, taxlevel=2, cutoff=0.03, processors=1)
+#system(mv ibumes.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.unique_list.list ibumes.final.list)
+#system(mv ibumes.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta ibumes.final.fasta)
+#system(mv ibumes.trim.contigs.good.unique.good.filter.unique.precluster.pick.rdp.wang.pick.taxonomy ibumes.final.taxonomy)
+#system(mv ibumes.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table ibumes.final.count_table)
+
+# these steps make the OTU file (the .shared file)
+#count.groups(count=ibumes.final.count_table)
+#make.shared(list=ibumes.final.list, count=ibumes.final.count_table, label=0.03)
+#classify.otu(list=ibumes.final.list, count=ibumes.final.count_table, taxonomy=ibumes.final.taxonomy, label=0.03)
+###remove.groups(count=ibumes.final.count_table, fasta=ibumes.final.fasta, taxonomy=ibumes.final.taxonomy, list=ibumes.final.list, shared=ibumes.final.shared, groups=)
+        # optional: I remove mocks/weird samples before running PCOA/NMDS (was not done here)
+
+## calculating some measures in mothur:
+#dist.shared(shared=ibumes.final.shared, calc=thetayc-jclass-jest)
+#pcoa(phylip=ibumes.final.thetayc.0.03.lt.dist)
+#nmds(phylip=ibumes.final.thetayc.0.03.lt.dist, mindim=3, maxdim=3)
+#summary.shared(shared=ibumes.final.shared, calc=sharedsobs-braycurtis-spearman-thetayc-jsd-sharednseqs)
+#summary.single(shared=ibumes.final.shared, calc=simpsoneven-simpson-invsimpson-shannon-npshannon-sobs-chao-nseqs)
+
+## now, let's isolate the samples we are interested in:
+## mesalamine samples only:
+get.groups(shared=ibumes.final.shared, groups=M046_IIA_0h_2A-M046_IIA_1h_1A-M046_IIA_1h_2A-M046_IIA_2h_1A-M046_IIA_2h_2A-M046_IIA_3h_1A-M046_IIA_3h_2A-M046_IIA_48h_S-M046_IIA_4h_1A-M046_IIA_4h_2A-M046_IIA_4h_3A-M046_IIA_5h_1A-M046_IIA_5h_2A-M046_IIA_6h_1A-M046_IIA_6h_2A-M046_IIA_7h_1A-M046_IIA_7h_2A-M046_IIB_GI_0h_1A-M046_IIB_GI_0h_3A-M046_IIB_GI_1h_1A-M046_IIB_GI_1h_2A-M046_IIB_GI_1h_3A-M046_IIB_GI_2h_1A-M046_IIB_GI_2h_2A-M046_IIB_GI_2h_3A-M046_IIB_GI_3h_2A-M046_IIB_GI_3h_3A-M046_IIB_GI_4h_1A-M046_IIB_GI_4h_2A-M046_IIB_GI_4h_3A-M046_IIB_GI_5h_2A-M046_IIB_GI_5h_3A-M046_IIB_GI_6h_1A-M046_IIB_GI_6h_2A-M046_IIB_GI_6h_3A-M046_IIB_GI_7h_1A-M046_IIB_GI_7h_2A-M046_IIB_GI_7h_3A-M046_IIC_0h_1A-M046_IIC_0h_3A-M046_IIC_1h_1A_and_M046_IIC_1h_2A-M046_IIC_1h_3A-M046_IIC_2h_1A-M046_IIC_2h_2A-M046_IIC_2h_3A-M046_IIC_3h_1A-M046_IIC_3h_2A-M046_IIC_3h_3A-M046_IIC_48h_S-M046_IIC_4h_1A-M046_IIC_4h_2A-M046_IIC_4h_3A-M046_IIC_5h_1A-M046_IIC_5h_2A-M046_IIC_5h_3A-M046_IIC_6h_1A-M046_IIC_6h_2A-M046_IIC_6h_3A-M046_IIC_7h_1A-M046_IIC_7h_2A-M046_IIC_7h_3A-M047_IIA_GI_0h_2A-M047_IIA_GI_1h_2A-M047_IIA_GI_2h_1A-M047_IIA_GI_2h_2A-M047_IIA_GI_3h_1A-M047_IIA_GI_3h_2A-M047_IIA_GI_4h_1A-M047_IIA_GI_4h_2A-M047_IIA_GI_5h_1A-M047_IIA_GI_5h_2A-M047_IIA_GI_6h_1A-M047_IIA_GI_6h_2A-M047_IIA_GI_7h_1A-M047_IIA_GI_7h_2A-M048_IIB_GI_0h_1A-M048_IIB_GI_0h_2A-M048_IIB_GI_1h_1A-M048_IIB_GI_1h_2A-M048_IIB_GI_2h_1A-M048_IIB_GI_2h_2A-M048_IIB_GI_3h_2A-M048_IIB_GI_4h_1A-M048_IIB_GI_4h_2A-M048_IIB_GI_5h_1A-M048_IIB_GI_5h_2A-M048_IIB_GI_6h_1A-M048_IIB_GI_6h_2A-M048_IIB_GI_7h_1A-M048_IIB_GI_7h_2A-M053_IIB_1h_2A-M053_IIB_2h_2A-M053_IIB_3h_2A-M053_IIB_4h_2A-M053_IIB_4h_3A-M053_IIB_5h_1A-M053_IIB_5h_2A-M053_IIB_6h_1A-M053_IIB_6h_2A-M053_IIB_7h_1A-M053_IIB_7h_2A-M061_IIA_0h_1A-M061_IIA_0h_2A-M061_IIA_1h_1A-M061_IIA_1h_2A-M061_IIA_2h_1A-M061_IIA_2h_2A-M061_IIA_3h_1A-M061_IIA_3h_2A-M061_IIA_4h_1A-M061_IIA_4h_2A-M061_IIA_5h_1A-M061_IIA_5h_2A-M061_IIA_6h_1A-M061_IIA_6h_2A-M061_IIA_7h_1A-M062_IIA_0h_1A-M062_IIA_0h_2A-M062_IIA_1h_1A-M062_IIA_1h_2A-M062_IIA_2h_1A-M062_IIA_2h_2A-M062_IIA_3h_1A-M062_IIA_3h_2A-M062_IIA_48h_S-M062_IIA_4h_1A-M062_IIA_4h_2A-M062_IIA_5h_1A-M062_IIA_5h_2A-M062_IIA_6h_1A-M062_IIA_6h_2A-M062_IIA_7h_1A-M062_IIA_7h_2A-M063_IIC_0h_3A-M063_IIC_1h_1A-M063_IIC_1h_2A-M063_IIC_1h_3A-M063_IIC_2h_3A-M063_IIC_3h_3A-M063_IIC_4h_1A-M063_IIC_4h_2A-M063_IIC_4h_3A-M063_IIC_5h_1A-M063_IIC_5h_2A-M063_IIC_6h_1A-M063_IIC_6h_2A-M063_IIC_6h_3A-M063_IIC_7h_1A-M063_IIC_7h_2A-M063_IIC_7h_3A-M064_IIC_0h_1A-M064_IIC_0h_2A-M064_IIC_1h_1A-M064_IIC_1h_2A-M064_IIC_2h_1A-M064_IIC_2h_2A-M064_IIC_3h_1A-M064_IIC_3h_2A-M064_IIC_48h_S-M064_IIC_4h_1A-M064_IIC_4h_2A-M064_IIC_5h_1A-M064_IIC_5h_2A-M064_IIC_6h_1A-M064_IIC_6h_2A-M064_IIC_7h_2A)
+count.groups(shared=ibumes.final.0.03.pick.shared)
+	# remove groups <4000:
+remove.groups(shared=ibumes.final.0.03.pick.shared, groups=M064_IIC_48h_S-M062_IIA_1h_1A-M062_IIA_0h_2A-M048_IIB_GI_5h_2A-M048_IIB_GI_0h_2A-M046_IIC_1h_1A_and_M046_IIC_1h_2A-M046_IIB_GI_7h_2A-M046_IIB_GI_6h_2A-M048_IIB_GI_7h_2A)
+system(mv ibumes.final.0.03.pick.0.03.pick.shared mesalamine.final.shared)
+dist.shared(shared=mesalamine.final.shared, calc=thetayc-jclass-jest, subsample=T, iters=5000)
+pcoa(phylip=mesalamine.final.thetayc.0.03.lt.dist)
+nmds(phylip=mesalamine.final.thetayc.0.03.lt.dist, mindim=3, maxdim=3)
+summary.shared(shared=mesalamine.final.shared, calc=sharedsobs-braycurtis-spearman-thetayc-jsd-sharednseqs)
+summary.single(shared=mesalamine.final.shared, calc=simpsoneven-simpson-invsimpson-shannon-npshannon-sobs-chao-nseqs)
+filter.shared(shared=mesalamine.final.shared, minpercentsamples=5, makerare=T, minpercent=0.0001)

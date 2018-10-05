@@ -1,0 +1,17 @@
+variable	P_value	coefficient	abscoef	metabolite	site	taxname	phylum	family	Size
+Otu0001	0.00000077635632648208	7.97234906610943	7.97234906610943	pH	Duodenum	Otu0001_Streptococcus	Firmicutes	Streptococcaceae	5179263
+Otu0003	0.0000012152111936982	-4.12454408752931	4.12454408752931	pH	Duodenum	Otu0003_Pasteurellaceae_unclassified	Proteobacteria	Pasteurellaceae	1199904
+Otu0005	0.0000148706407908921	1.56824556936788	1.56824556936788	pH	Duodenum	Otu0005_Gemella	Firmicutes	Bacillales_Incertae_Sedis_XI	1022756
+Otu0007	0.000458990773757634	1.29540559929357	1.29540559929357	pH	Duodenum	Otu0007_Streptococcus	Firmicutes	Streptococcaceae	548996
+Otu0008	0.0000163067451379505	1.18644781590138	1.18644781590138	pH	Duodenum	Otu0008_Lactobacillales_unclassified	Firmicutes	Lactobacillales_unclassified	543667
+Otu0009	0.000000191714416199802	-1.18330118112779	1.18330118112779	pH	Duodenum	Otu0009_Haemophilus	Proteobacteria	Pasteurellaceae	403315
+Otu0010	0.0000359932679840563	0.473930046909222	0.473930046909222	pH	Duodenum	Otu0010_Actinomyces	Actinobacteria	Actinomycetaceae	389524
+Otu0011	0.0000173802616158781	-1.54606570766498	1.54606570766498	pH	Duodenum	Otu0011_Prevotellaceae_unclassified	Bacteroidetes	Prevotellaceae	349723
+Otu0022	0.000410180999167319	-0.422447441146744	0.422447441146744	pH	Duodenum	Otu0022_Prevotella	Bacteroidetes	Prevotellaceae	160657
+Otu0025	0.0000763606122142319	-0.302950442340117	0.302950442340117	pH	Duodenum	Otu0025_Porphyromonas	Bacteroidetes	Porphyromonadaceae	124663
+Otu0030	0.000671519319938936	-0.116199205653566	0.116199205653566	pH	Duodenum	Otu0030_Prevotella	Bacteroidetes	Prevotellaceae	103957
+Otu0033	0.00000961145849607006	-0.166680056759921	0.166680056759921	pH	Duodenum	Otu0033_Prevotella	Bacteroidetes	Prevotellaceae	87286
+Otu0054	0.0000627450573075922	-0.0304880280206872	0.0304880280206872	pH	Duodenum	Otu0054_Pasteurellaceae_unclassified	Proteobacteria	Pasteurellaceae	44355
+Otu0079	0.0000649159011760685	0.000000673002264128887	0.000000673002264128887	mesalamine	Duodenum	Otu0079_Leptotrichiaceae_unclassified	Fusobacteria	Leptotrichiaceae	24975
+Otu0082	0.0000337471330259322	-0.190438295350985	0.190438295350985	pH	Duodenum	Otu0082_Flavobacteriaceae_unclassified	Bacteroidetes	Flavobacteriaceae	23221
+Otu0194	0.0000868994365778851	-0.0139843090573427	0.0139843090573427	pH	Duodenum	Otu0194_Streptococcus	Firmicutes	Streptococcaceae	4225
