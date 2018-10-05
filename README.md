@@ -4,9 +4,6 @@
 
 This repository includes processed sequence files, raw processed data files, sequence processing steps, and code used in a submitted manuscript "Longitudinal and Temporal Analysis of the Stomach and Small Intestinal Microbiota in Fasted Healthy Humans", authored by Anna M. Seekatz, Matthew K. Schnizlein, Mark J. Koenigsknecht, Jason R. Baker, Ann F. Frances, William L. Hasler, Barry E. Bleske, Vincent B. Young, and Duxin Sun.
 
-#### Importance:
-We identified fecal microbiota features that distinguished *Klebsiella pneumoniae* carbapanemase-producing *K. pneumoniae* colonized and non-colonized patients who were newly admitted to a long-term acute care hospital. These features may warrant further investigation as candidates for inclusion in microbiome disruption indices.
-
 #### Abstract:
 
 **Objectives:** Although the microbiota in the proximal gastrointestinal (GI) tract has been implicated in maintaining health and preventing diseases, much of this microbial community remains understudied in healthy individuals compared to the distal GI tract. This study aimed to characterize the microbiota across multiple proximal GI sites over time in healthy individuals. 
