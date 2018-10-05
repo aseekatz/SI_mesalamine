@@ -339,14 +339,19 @@ colnames(m2) <- allnames
 ```
 #-------------------# # Combine metadata, OTUfrac, and summary file for Table S1
 ### note: including negative controls here, too
+### these were any samples included on Run51, Run197 from the full sampleinfo sheet
 
 sums<-read.table(file="mesal_summary.txt", header=T)		#includes samples we did NOT include, as well
+meta<-read.table(file="../ibumes/ibumes_temp_data.txt", header=T)		# full run information
+shared<-read.table(file="../ibumes/mothurfiles/ibumes.final.shared", header=T, row.names=2)	#all OTU counts for all samples
 
-shared<-read.table(file="../../ibumes/mothurfiles/ibumes.final.shared", header=T, row.names=2)	#also includes samples not used in analysis
-# filter out samples we want (166 total)
-samples<-as.character(sums$seqID)
+# filter out samples we want (166 total, plus controls)
+# subset samples that were used in mesalamine project
+mes.samples<-meta[meta$Run %in% c("Run51", "Run197"), ]		#184 samples total
+samples<-as.character(mes.samples$seqID)
 shared<-shared[rownames(shared) %in% samples, ]
 
+# let's work with raw data first
 ### now, process shared in same way that it was processed above to produce the OTUfrac files
 shared$numOtus <- NULL
 shared$label <- NULL
@@ -375,8 +380,11 @@ taxnames<-as.character(tax[tax$OTU %in% colnames(otus), c("taxname")])
 names(otus)[1:length(otus)-1]<-taxnames
 
 # merge with summary info
-ts1<-merge(sums, otus, by.x="seqID", by.y="row.names")
+ts1<-merge(sums, otus, by.x="seqID", by.y="row.names", all.y=T)
 #write.table(ts1, file="TableS1_sampleinfo.txt", sep="\t", quote=FALSE, col.names=TRUE, row.names=FALSE)
+
+# will also need to add nseqs to controls:
+rowSums(shared)		# just added these to the table itself
 
 
 
